@@ -1,0 +1,56 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Post {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model Comment {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model Blog {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  apis      Api[]
+  createdAt DateTime @default(now())
+  email     String?  @unique
+  firstName String?
+  id        String   @id @default(cuid())
+  lastName  String?
+  password  String
+  roles     Json
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+}
+
+model Api {
+  authRequired Boolean?
+  createdAt    DateTime       @default(now())
+  description  String?
+  endpoint     String?
+  id           String         @id @default(cuid())
+  method       EnumApiMethod?
+  name         String?
+  updatedAt    DateTime       @updatedAt
+  user         User?          @relation(fields: [userId], references: [id])
+  userId       String?
+}
+
+enum EnumApiMethod {
+  Option1
+}
